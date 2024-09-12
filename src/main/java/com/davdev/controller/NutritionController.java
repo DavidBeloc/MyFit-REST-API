@@ -1,4 +1,4 @@
-package com.davdev.http.rest;
+package com.davdev.controller;
 
 import com.davdev.dto.NutritionCreateEditDto;
 import com.davdev.dto.NutritionReadDto;

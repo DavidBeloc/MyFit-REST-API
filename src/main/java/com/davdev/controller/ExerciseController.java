@@ -1,4 +1,4 @@
-package com.davdev.http.rest;
+package com.davdev.controller;
 
 import com.davdev.dto.ExerciseCreateEditDto;
 import com.davdev.dto.ExerciseReadDto;

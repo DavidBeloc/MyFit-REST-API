@@ -6,6 +6,7 @@ import com.davdev.dto.WorkoutReadDto;
 import com.davdev.mapper.WorkoutCreatEditMapper;
 import com.davdev.mapper.WorkoutReadMapper;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -28,7 +29,8 @@ public class WorkoutService {
                 .map(workoutReadMapper::map);
     }
 
-    public List<WorkoutReadDto> findAllByUserId(Long userId, Pageable pageable) {
+    public List<WorkoutReadDto> findAllByUserId(Long userId, Integer page, Integer size) {
+        Pageable pageable = PageRequest.of(page, size);
         return workoutRepository.findAllByUserIdOrderByDateDesc(userId, pageable).stream()
                 .map(workoutReadMapper::map)
                 .toList();
