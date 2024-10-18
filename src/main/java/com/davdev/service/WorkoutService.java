@@ -1,6 +1,7 @@
 package com.davdev.service;
 
 import com.davdev.database.repository.WorkoutRepository;
+import com.davdev.dto.PagedResponse;
 import com.davdev.dto.WorkoutCreateEditDto;
 import com.davdev.dto.WorkoutReadDto;
 import com.davdev.mapper.WorkoutCreatEditMapper;
@@ -12,7 +13,6 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.time.LocalDate;
-import java.util.List;
 import java.util.Optional;
 
 @Service
@@ -29,11 +29,12 @@ public class WorkoutService {
                 .map(workoutReadMapper::map);
     }
 
-    public List<WorkoutReadDto> findAllByUserId(Long userId, Integer page, Integer size) {
+    public PagedResponse<WorkoutReadDto> findAllByUserId(Long userId, Integer page, Integer size) {
         Pageable pageable = PageRequest.of(page, size);
-        return workoutRepository.findAllByUserIdOrderByDateDesc(userId, pageable).stream()
-                .map(workoutReadMapper::map)
-                .toList();
+        var workouts = workoutRepository.findAllByUserIdOrderByDateDesc(userId, pageable);
+        var workoutReadDto = workouts.getContent().stream().map(workoutReadMapper::map).toList();
+        return new PagedResponse<>(workoutReadDto,
+                new PagedResponse.Metadata(workouts.getNumber(), workouts.getSize(), workouts.getTotalElements(), workouts.getTotalPages(), workouts.isLast()));
     }
 
     public Optional<WorkoutReadDto> findByUserIdAndDate(Long id, LocalDate date) {

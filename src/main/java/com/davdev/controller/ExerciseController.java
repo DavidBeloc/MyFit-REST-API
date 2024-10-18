@@ -6,6 +6,7 @@ import com.davdev.service.ExerciseService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.server.ResponseStatusException;
 
@@ -31,13 +32,13 @@ public class ExerciseController {
 
     @PostMapping
     @ResponseStatus(HttpStatus.CREATED)
-    public ExerciseReadDto create(@RequestBody ExerciseCreateEditDto exerciseDto) {
+    public ExerciseReadDto create(@Validated @RequestBody ExerciseCreateEditDto exerciseDto) {
         return exerciseService.create(exerciseDto);
     }
 
     @PutMapping("/{id}")
     public ExerciseReadDto update(@PathVariable("id") Long id,
-                                 @RequestBody ExerciseCreateEditDto exerciseDto) {
+                                 @Validated @RequestBody ExerciseCreateEditDto exerciseDto) {
         return exerciseService.update(id, exerciseDto)
                 .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND));
     }

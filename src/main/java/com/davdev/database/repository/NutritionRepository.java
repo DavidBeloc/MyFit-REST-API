@@ -8,6 +8,5 @@ import java.util.Optional;
 
 public interface NutritionRepository extends JpaRepository<Nutrition, Long> {
 
-    //    @Query("select Nutrition from Nutrition n where n.userId = :userId and n.date = :date")
     Optional<Nutrition> findByUserIdAndDate(Long userId, LocalDate date);
 }

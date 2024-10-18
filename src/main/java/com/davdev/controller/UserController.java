@@ -6,6 +6,7 @@ import com.davdev.service.UserService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.server.ResponseStatusException;
 
@@ -31,13 +32,13 @@ public class UserController {
 
     @PostMapping
     @ResponseStatus(HttpStatus.CREATED)
-    public UserReadDto create(@RequestBody UserCreateEditDto userDto) {
+    public UserReadDto create(@Validated @RequestBody UserCreateEditDto userDto) {
         return userService.create(userDto);
     }
 
     @PutMapping("/{id}")
     public UserReadDto update(@PathVariable("id") Long id,
-                              @RequestBody UserCreateEditDto userDto) {
+                              @Validated @RequestBody UserCreateEditDto userDto) {
         return userService.update(id, userDto)
                 .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND));
     }

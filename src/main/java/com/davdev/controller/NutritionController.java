@@ -6,6 +6,7 @@ import com.davdev.service.NutritionService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.server.ResponseStatusException;
 
@@ -24,22 +25,22 @@ public class NutritionController {
                 .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND));
     }
 
-    @GetMapping("/date/{nutritionDate}")
+    @GetMapping("/search")
     public NutritionReadDto findByUserIdAndDate(@PathVariable("userId") Long userId,
-                                                @PathVariable("nutritionDate") LocalDate date) {
+                                                @RequestParam(name = "date", required = false) LocalDate date) {
         return nutritionService.findByUserIdAndDate(userId, date)
                 .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND));
     }
 
     @PostMapping
     @ResponseStatus(HttpStatus.CREATED)
-    public NutritionReadDto create(@RequestBody NutritionCreateEditDto nutritionDto) {
+    public NutritionReadDto create(@Validated @RequestBody NutritionCreateEditDto nutritionDto) {
         return nutritionService.create(nutritionDto);
     }
 
     @PutMapping("/{id}")
     public NutritionReadDto update(@PathVariable("id") Long id,
-                                   @RequestBody NutritionCreateEditDto nutritionDto) {
+                                   @Validated @RequestBody NutritionCreateEditDto nutritionDto) {
         return nutritionService.update(id, nutritionDto)
                 .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND));
     }
